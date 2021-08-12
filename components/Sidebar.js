@@ -15,8 +15,7 @@ class SidebarSection extends Component {
                             color="white"
                         />
                     }
-                    title="Home"
-                />
+                    title="Home"/>
                 <Button onPress={() => { this.props.navigation.navigate('Gallery'); }}
                     icon={
                         <Icon
@@ -26,7 +25,7 @@ class SidebarSection extends Component {
                         />
                     }
                     title="Gallery" />
-                <Button onPress={() => { this.props.navigation.navigate('List'); }}
+                <Button onPress={() => { this.props.navigation.navigate('LoginPage'); }}
                     icon={
                         <Icon
                             name="menu"
@@ -34,7 +33,7 @@ class SidebarSection extends Component {
                             color="white"
                         />
                     }
-                    title="List" />
+                    title="Login" />
                 <Button onPress={() => { this.props.navigation.navigate('Contact'); }}
                     icon={
                         <Icon
@@ -44,6 +43,33 @@ class SidebarSection extends Component {
                         />
                     }
                     title="Contact" />
+                <Button onPress={() => { this.props.navigation.navigate('List'); }}
+                    icon={
+                        <Icon
+                            name="menu"
+                            size={15}
+                            color="white"
+                        />
+                    }
+                    title="List"  /> 
+                <Button onPress={() => { this.props.navigation.navigate('Confidentiality'); }}
+                    icon={
+                        <Icon
+                            name="menu"
+                            size={15}
+                            color="white"
+                        />
+                    }
+                    title="Confidentiality"  />                    
+                <Button onPress={() => { this.props.navigation.navigate('Settings'); }}
+                    icon={
+                        <Icon
+                            name="menu"
+                            size={15}
+                            color="white"
+                        />
+                    }
+                    title="Settings" />        
             </View>
         );
     }

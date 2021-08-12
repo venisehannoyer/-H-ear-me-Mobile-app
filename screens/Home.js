@@ -4,7 +4,6 @@ import { Divider, Button, Header, Icon } from 'react-native-elements';
 
 export default class HomeScreen extends React.PureComponent {
 
-
     render() {
         return (
             <View style={{
@@ -15,23 +14,13 @@ export default class HomeScreen extends React.PureComponent {
                     statusBarProps={{ barStyle: 'light-content' }}
                     barStyle="light-content"
                     leftComponent={<Icon name="menu" onPress={() => this.props.navigation.openDrawer()} />}
-                    centerComponent={<Image
-                        source={{
-                            uri: 'https://i.postimg.cc/SNCMqQP4/Logo-big.png'
-                            // uri: 'https://i.postimg.cc/jdV3QB7F/IMG-20191105-10568.jpg'
-                        }}
-                        ImageStyle={{
-                            width: 200,
-                            height: 200,
-                            resizeMode: 'stretch', //contain
-                        }} />}
+ 
                     containerStyle={{
-                        backgroundColor: '#BDBDBD',
+                        backgroundColor: '#3175b8',
                         justifyContent: 'space-around',
                         marginTop: 20,
                     }}
                 />
-
                 <View
                     style={{
                         flex: 1,
@@ -39,8 +28,22 @@ export default class HomeScreen extends React.PureComponent {
                         alignItems: 'center'
                     }}>
 
+                    <Image
+                        source={{
+                            //uri: 'https://i.postimg.cc/dtCKLDbB/Hearme-Logo-Black.jpg'
+                            uri: 'https://i.postimg.cc/SNCMqQP4/Logo-big.png',
+                            // uri: 'https://i.postimg.cc/jdV3QB7F/IMG-20191105-10568.jpg'
+                        }}
+                        style={{
+                            flex: 1,
+                            height: '100%',
+                            width: '100%',
+                            resizeMode: 'contain'
+                        }}
+                    />
+    
                     <View style={{
-                        backgroundColor: "#b3ccff",
+                        backgroundColor: "#b83175",
                         width: '40%',
                         paddingTop: 10,
                         marginVertical: 10,
@@ -50,14 +53,11 @@ export default class HomeScreen extends React.PureComponent {
                         < Text style={{
                             color: '#000000',
                             textAlign: 'center',
-
-
                         }
                         }>
                             {'Home'}
                         </Text >
                     </View>
-
                     <Divider style={{
                         backgroundColor: "grey",
                         height: 1,

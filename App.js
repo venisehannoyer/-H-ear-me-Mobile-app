@@ -4,15 +4,22 @@ import { Icon } from 'react-native-elements';
 import Sidebar from './components/Sidebar';
 import Home from './screens/Home';
 import Gallery from './screens/Gallery';
+import Settings from './screens/Settings';
 import List from './screens/List';
+import Confidentiality from './screens/Confidentiality';
+
+import LoginPage from './components/user/LoginPage';
 import Contact from './screens/Contact';
 
 const DrawerNavigator = createDrawerNavigator(
   {
     Home: { screen: Home },
     Gallery: { screen: Gallery },
+    LoginPage: { screen: LoginPage },
+    Contact: { screen: Contact },
     List: { screen: List },
-    Contact: { screen: Contact }
+    Confidentiality: { screen: Confidentiality },
+    Settings: { screen: Settings }
   },
   {
     initialRouteName: "Home",
@@ -32,5 +39,6 @@ const StackNavigator = createStackNavigator(
     headerMode: "none",
   }
 );
+
 
 export default createAppContainer(StackNavigator);

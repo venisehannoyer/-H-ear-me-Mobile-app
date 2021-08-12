@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, ScrollView, StyleSheet, Text, Dimensions } from 'react-native';
-import { Input, SearchBar, Icon, Button, Header } from 'react-native-elements';
+import { Input, SearchBar, Icon, Button } from 'react-native-elements';
 
 import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -19,17 +19,6 @@ const dummySearchBarProps = {
 class InputHome extends Component {
     render() {
         return (
-            <View>
-                <Header
-                    statusBarProps={{ barStyle: 'light-content' }}
-                    barStyle="light-content"
-                    leftComponent={<Icon name="menu" onPress={() => this.props.navigation.openDrawer()} />}
-                    centerComponent={{ text: 'Contact', style: { color: '#fff' } }}
-                    containerStyle={{
-                        backgroundColor: '#3D6DCC',
-                        justifyContent: 'space-around',
-                    }}
-                />
             <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
                 <View style={styles.headerContainer}>
                     <Icon color="white" name="search" size={62} />
@@ -325,8 +314,7 @@ class InputHome extends Component {
                         />
                     </View>
                 </View>
-                </ScrollView>
-                </View>
+            </ScrollView>
         );
     }
 }

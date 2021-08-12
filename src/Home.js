@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Text, View, Image} from 'react-native';
 import {Divider, Button, Header, Icon} from 'react-native-elements';
 
-export default class Confidentiality extends React.PureComponent {
+export default class HomeScreen extends React.PureComponent {
   render() {
     return (
       <View
@@ -19,6 +19,21 @@ export default class Confidentiality extends React.PureComponent {
               onPress={() => this.props.navigation.openDrawer()}
             />
           }
+          centerComponent={
+            <Image
+              source={{
+                //uri: 'https://i.postimg.cc/dtCKLDbB/Hearme-Logo-Black.jpg'
+                uri: 'https://i.postimg.cc/SNCMqQP4/Logo-big.png',
+                // uri: 'https://i.postimg.cc/jdV3QB7F/IMG-20191105-10568.jpg'
+              }}
+              style={{
+                flex: 1,
+                height: '100%',
+                width: '100%',
+                resizeMode: 'contain',
+              }}
+            />
+          }
           containerStyle={{
             backgroundColor: '#3175b8',
             justifyContent: 'space-around',
@@ -31,20 +46,6 @@ export default class Confidentiality extends React.PureComponent {
             backgroundColor: '#ccf2ff',
             alignItems: 'center',
           }}>
-          <Image
-            source={{
-              //uri: 'https://i.postimg.cc/dtCKLDbB/Hearme-Logo-Black.jpg'
-              uri: 'https://i.postimg.cc/SNCMqQP4/Logo-big.png',
-              // uri: 'https://i.postimg.cc/jdV3QB7F/IMG-20191105-10568.jpg'
-            }}
-            style={{
-              flex: 1,
-              height: '100%',
-              width: '100%',
-              resizeMode: 'contain',
-            }}
-          />
-
           <View
             style={{
               backgroundColor: '#b83175',
@@ -82,6 +83,8 @@ export default class Confidentiality extends React.PureComponent {
               style={{
                 color: '#1212ee',
                 textAlign: 'center',
+                fontSize: 20,
+                lineHeight: 30,
               }}>
               {
                 "Notre produit se concentre sur la détection et localisation et l'apparition de nouveaux bruits - \n en utilisant l'intelligence artificielle pour détecter le type de signature sonore (conversation, sonnette, alarme, bris de verre), voire le transcrire et en adaptant le réglage aux individus (préférence et handicap) et aux situations. \n Il sera sous la forme d'un tour de cou connecté au téléphone et aux appareils d'aide à l'écoute. \n (proposition de résumé pour le sondage)"

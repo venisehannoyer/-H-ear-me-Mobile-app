@@ -10,7 +10,6 @@ import {
     Icon,
     ListItem,
     Avatar,
-    Header
 } from 'react-native-elements';
 
 import colors from '../config/colors';
@@ -180,17 +179,6 @@ class Icons extends Component {
         const { selectedIndex } = this.state;
 
         return (
-            <View>
-                <Header
-                    statusBarProps={{ barStyle: 'light-content' }}
-                    barStyle="light-content"
-                    leftComponent={<Icon name="menu" onPress={() => this.props.navigation.openDrawer()} />}
-                    centerComponent={{ text: 'List', style: { color: '#fff' } }}
-                    containerStyle={{
-                        backgroundColor: '#3D6DCC',
-                        justifyContent: 'space-around',
-                    }}
-                />
             <ScrollView>
                 <View style={styles.headerContainer}>
                     <Icon color="white" name="invert-colors" size={62} />
@@ -424,9 +412,7 @@ class Icons extends Component {
                         ))}
                     </Card>
                 </View>
-                </ScrollView>
-            </View>
-
+            </ScrollView>
         );
     }
 }

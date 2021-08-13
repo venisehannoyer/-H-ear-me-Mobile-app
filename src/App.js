@@ -14,6 +14,7 @@ import RecognizeAudio from './screens/RecognizeAudio';
 import Confidentiality from './screens/Confidentiality';
 
 import LoginPage from './components/user/LoginPage';
+import SignupPage from './components/user/SignupPage';
 import Contact from './screens/Contact';
 
 const DrawerNavigator = createDrawerNavigator(
@@ -21,6 +22,7 @@ const DrawerNavigator = createDrawerNavigator(
     Home: {screen: Home},
     Gallery: {screen: Gallery},
     LoginPage: {screen: LoginPage},
+    SignupPage: {screen: SignupPage},
     //Contact: {screen: Contact},
     RecognizeAudio: {screen: RecognizeAudio},
     Confidentiality: {screen: Confidentiality},

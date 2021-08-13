@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { ScrollView, View, StyleSheet, Platform, Image } from 'react-native';
+import { ScrollView, View, StyleSheet, Text, Platform, Image } from 'react-native';
 import colors from '../config/colors';
-import { PricingCard, Text, Header, Icon } from 'react-native-elements';
+import { PricingCard, Header, Icon } from 'react-native-elements';
 
 class Pricing extends Component {
     render() {

@@ -103,16 +103,31 @@ class SidebarSection extends Component {
                         />
                     }
                     title="Contact" 
-                />
-                <Button onPress={() => { this.props.navigation.navigate('List'); }}
-                    icon={
-                        <Icon
-                            name="menu"
-                            size={23}
-                            color="white"
-                        />
-                    }
-                    title="List"  />  */}
+                />*/}
+        <Button
+          onPress={() => {
+            this.props.navigation.navigate('RecognizeAudio');
+          }}
+          icon={
+            <Icon
+              name="sound"
+              type="antdesign"
+              size={23}
+              color="black"
+              style={{
+                ...styles.icon,
+              }}
+            />
+          }
+          title="Recognize Audio"
+          iconRight
+          titleStyle={{
+            ...styles.text,
+          }}
+          buttonStyle={{
+            ...styles.button,
+          }}
+        />
         <Button
           onPress={() => {
             this.props.navigation.navigate('Confidentiality');

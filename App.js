@@ -3,7 +3,7 @@ import {
   PermissionsAndroid,
   Platform,
   TouchableOpacity,
-  LogBox,
+  LogBox
 } from 'react-native';
 import {StyleSheet, Text, View} from 'react-native';
 import {PicovoiceManager} from '@picovoice/picovoice-react-native';
@@ -20,7 +20,7 @@ type State = {
 
 export default class App extends Component<Props, State> {
   _picovoiceManager: PicovoiceManager | undefined;
-  LogBox.ignoreAllLogs(true);
+  //LogBox.ignoreAllLogs(true);
 
   constructor(props: Props) {
     super(props);

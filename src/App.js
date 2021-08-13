@@ -10,7 +10,7 @@ import Sidebar from './components/Sidebar';
 import Home from './screens/Home';
 import Gallery from './screens/Gallery';
 import Settings from './screens/Settings';
-import List from './screens/List';
+import RecognizeAudio from './screens/RecognizeAudio';
 import Confidentiality from './screens/Confidentiality';
 
 import LoginPage from './components/user/LoginPage';
@@ -21,10 +21,10 @@ const DrawerNavigator = createDrawerNavigator(
     Home: {screen: Home},
     Gallery: {screen: Gallery},
     LoginPage: {screen: LoginPage},
-    Contact: {screen: Contact},
-    //List: {screen: List},
+    //Contact: {screen: Contact},
+    RecognizeAudio: {screen: RecognizeAudio},
     Confidentiality: {screen: Confidentiality},
-    Settings: {screen: Settings},
+    Settings: {screen: Settings}
   },
   {
     initialRouteName: 'Home',

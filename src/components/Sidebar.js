@@ -47,8 +47,8 @@ class SidebarSection extends Component {
                         />
                     }
                     title="Contact" 
-                />
-                <Button onPress={() => { this.props.navigation.navigate('List'); }}
+                />*/}
+                <Button onPress={() => { this.props.navigation.navigate('RecognizeAudio'); }}
                     icon={
                         <Icon
                             name="menu"
@@ -56,7 +56,8 @@ class SidebarSection extends Component {
                             color="white"
                         />
                     }
-                    title="List"  />  */}
+                    title="Recognize Audio"  
+                />  
                 <Button onPress={() => { this.props.navigation.navigate('Confidentiality'); }}
                     icon={
                         <Icon

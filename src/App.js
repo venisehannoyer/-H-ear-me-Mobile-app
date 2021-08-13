@@ -22,7 +22,7 @@ const DrawerNavigator = createDrawerNavigator(
     Gallery: {screen: Gallery},
     LoginPage: {screen: LoginPage},
     Contact: {screen: Contact},
-    List: {screen: List},
+    //List: {screen: List},
     Confidentiality: {screen: Confidentiality},
     Settings: {screen: Settings},
   },

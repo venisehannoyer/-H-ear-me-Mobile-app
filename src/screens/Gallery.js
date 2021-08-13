@@ -1,23 +1,43 @@
 import React, { Component } from 'react';
-import { ScrollView, View, StyleSheet, Platform } from 'react-native';
+import { ScrollView, View, StyleSheet, Platform, Image } from 'react-native';
 import colors from '../config/colors';
 import { PricingCard, Text, Header, Icon } from 'react-native-elements';
 
 class Pricing extends Component {
     render() {
         return (
-            <View>
-            <Header
-                statusBarProps={{ barStyle: 'light-content' }}
-                barStyle="light-content"
-                leftComponent={<Icon name="menu" onPress={() => this.props.navigation.openDrawer()} />}
-                centerComponent={{ text: 'Gallery', style: { color: '#fff' } }}
-                containerStyle={{
-                    backgroundColor: '#3D6DCC',
-                    justifyContent: 'space-around',
-                }}
-            />
+            <View>    
             <ScrollView style={{ backgroundColor: 'white' }}>
+                <Header
+                    statusBarProps={{barStyle: 'light-content'}}
+                    barStyle="light-content"
+                    leftComponent={
+                        <Icon
+                        name="menu"
+                        onPress={() => this.props.navigation.openDrawer()}
+                        />
+                    }
+                    centerComponent={
+                        <Image
+                        source={{
+                            //uri: 'https://i.postimg.cc/dtCKLDbB/Hearme-Logo-Black.jpg'
+                            uri: 'https://i.postimg.cc/SNCMqQP4/Logo-big.png',
+                            // uri: 'https://i.postimg.cc/jdV3QB7F/IMG-20191105-10568.jpg'
+                        }}
+                        style={{
+                            flex: 1,
+                            height: '100%',
+                            width: '100%',
+                            resizeMode: 'contain',
+                        }}
+                        />
+                    }
+                    containerStyle={{
+                        backgroundColor: '#3175b8',
+                        justifyContent: 'space-around',
+                        marginTop: 20,
+                    }}
+                />            
                 <View style={styles.hero}>
                     <Icon color="white" name="games" size={62} />
                     <Text style={styles.heading}>Pricing</Text>

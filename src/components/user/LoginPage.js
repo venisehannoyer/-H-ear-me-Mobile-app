@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, ScrollView, StyleSheet, Text, Dimensions } from 'react-native';
-import { Input, SearchBar, Icon, Button } from 'react-native-elements';
+import { View, ScrollView, StyleSheet, Text, Dimensions, Image } from 'react-native';
+import { Input, SearchBar, Icon, Button, Header } from 'react-native-elements';
 
 import SimpleIcon from 'react-native-vector-icons/SimpleLineIcons';
 import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,8 +20,36 @@ class LoginPage extends Component {
     render() {
         return (
             <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
-              
-                
+                <Header
+                    statusBarProps={{barStyle: 'light-content'}}
+                    barStyle="light-content"
+                    leftComponent={
+                        <Icon
+                        name="menu"
+                        onPress={() => this.props.navigation.openDrawer()}
+                        />
+                    }
+                    centerComponent={
+                        <Image
+                        source={{
+                            //uri: 'https://i.postimg.cc/dtCKLDbB/Hearme-Logo-Black.jpg'
+                            uri: 'https://i.postimg.cc/SNCMqQP4/Logo-big.png',
+                            // uri: 'https://i.postimg.cc/jdV3QB7F/IMG-20191105-10568.jpg'
+                        }}
+                        style={{
+                            flex: 1,
+                            height: '100%',
+                            width: '100%',
+                            resizeMode: 'contain',
+                        }}
+                        />
+                    }
+                    containerStyle={{
+                        backgroundColor: '#3175b8',
+                        justifyContent: 'space-around',
+                        marginTop: 20,
+                    }}
+                />                   
                 <View style={styles.contentView}>
                     <View
                         style={{

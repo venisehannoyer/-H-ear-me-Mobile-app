@@ -15,16 +15,8 @@ class SidebarSection extends Component {
                             color="white"
                         />
                     }
-                    title="Home"/>
-                <Button onPress={() => { this.props.navigation.navigate('Gallery'); }}
-                    icon={
-                        <Icon
-                            name="menu"
-                            size={15}
-                            color="white"
-                        />
-                    }
-                    title="Gallery" />
+                    title="Home"
+                />
                 <Button onPress={() => { this.props.navigation.navigate('LoginPage'); }}
                     icon={
                         <Icon
@@ -33,8 +25,9 @@ class SidebarSection extends Component {
                             color="white"
                         />
                     }
-                    title="Login" />
-                <Button onPress={() => { this.props.navigation.navigate('Contact'); }}
+                    title="Login" 
+                />
+                <Button onPress={() => { this.props.navigation.navigate('Gallery'); }}
                     icon={
                         <Icon
                             name="menu"
@@ -42,7 +35,19 @@ class SidebarSection extends Component {
                             color="white"
                         />
                     }
-                    title="Contact" />
+                    title="Pairing" 
+                />
+
+{/*                 <Button onPress={() => { this.props.navigation.navigate('Contact'); }}
+                    icon={
+                        <Icon
+                            name="menu"
+                            size={15}
+                            color="white"
+                        />
+                    }
+                    title="Contact" 
+                />
                 <Button onPress={() => { this.props.navigation.navigate('List'); }}
                     icon={
                         <Icon
@@ -51,7 +56,7 @@ class SidebarSection extends Component {
                             color="white"
                         />
                     }
-                    title="List"  /> 
+                    title="List"  />  */}
                 <Button onPress={() => { this.props.navigation.navigate('Confidentiality'); }}
                     icon={
                         <Icon

@@ -98,9 +98,7 @@ export default class HomeScreen extends React.PureComponent {
               marginVertical: 10,
               width: '40%',
             }}
-            onPress={() => {
-              alert('start button presses');
-            }}
+            onPress={() => { this.props.navigation.navigate('LoginPage'); }}
           />
         </View>
       </View>

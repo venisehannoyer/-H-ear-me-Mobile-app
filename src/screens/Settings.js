@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, SectionList } from 'react-native';
+import { View, StyleSheet, SectionList, Image } from 'react-native';
 
-import { ListItem, Divider, SearchBar } from 'react-native-elements';
+import { ListItem, Divider, SearchBar, Header, Icon } from 'react-native-elements';
 
 const ORANGE = '#FF9500';
 const BLUE = '#007AFF';
@@ -152,6 +152,36 @@ export default class Settings extends React.PureComponent {
 
     ListHeaderComponent = () => (
         <View>
+            <Header
+                statusBarProps={{barStyle: 'light-content'}}
+                barStyle="light-content"
+                leftComponent={
+                    <Icon
+                    name="menu"
+                    onPress={() => this.props.navigation.openDrawer()}
+                    />
+                }
+                centerComponent={
+                    <Image
+                    source={{
+                        //uri: 'https://i.postimg.cc/dtCKLDbB/Hearme-Logo-Black.jpg'
+                        uri: 'https://i.postimg.cc/SNCMqQP4/Logo-big.png',
+                        // uri: 'https://i.postimg.cc/jdV3QB7F/IMG-20191105-10568.jpg'
+                    }}
+                    style={{
+                        flex: 1,
+                        height: '100%',
+                        width: '100%',
+                        resizeMode: 'contain',
+                    }}
+                    />
+                }
+                containerStyle={{
+                    backgroundColor: '#3175b8',
+                    justifyContent: 'space-around',
+                    marginTop: 20,
+                }}
+            />                
             <SearchBar platform="ios" placeholder="Search" />
             <Divider />
         </View>

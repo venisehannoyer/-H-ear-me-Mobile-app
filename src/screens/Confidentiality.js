@@ -56,8 +56,9 @@ export default class Confidentiality extends React.PureComponent {
             }}>
             <Text
               style={{
-                color: '#000000',
+                color: '#ffffff',
                 textAlign: 'center',
+                fontSize: 20,
               }}>
               {'Confidentiality'}
             </Text>

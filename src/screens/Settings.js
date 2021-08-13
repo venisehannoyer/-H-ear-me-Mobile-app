@@ -21,52 +21,60 @@ const sections = [
   {
     data: [
       {
-        title: 'Airplane Mode',
-        icon: 'ios-airplane',
+        title: '   Mode',
+        icon: 'ios-volume-high',
         backgroundColor: ORANGE,
+      },
+
+      {
+        title: '   Neckband',
+        icon: 'ios-bluetooth',
+        backgroundColor: BLUE,
         hideChevron: true,
         checkbox: true,
       },
       {
-        title: 'Wi-Fi',
-        backgroundColor: BLUE,
-        icon: 'ios-wifi',
+        title: '   Hearing aids',
+        backgroundColor: TEAL_BLUE,
+        icon: 'ios-briefcase',
+        hideChevron: true,
+        checkbox: true,
       },
       {
-        title: 'Bluetooth',
-        backgroundColor: BLUE,
-        icon: 'ios-bluetooth',
+        title: '   Vibrations',
+        backgroundColor: GREEN,
+        icon: 'ios-radio',
         //rightTitle: 'Off',
         hideChevron: true,
         checkbox: true,
       },
       {
-        title: 'Cellular',
+        title: '   Vibration intensity',
         backgroundColor: GREEN,
         icon: 'ios-phone-portrait',
       },
       {
-        title: 'Personal Hotspot',
-        backgroundColor: GREEN,
+        title: '   Sensor sensitivity',
+        backgroundColor: TEAL_BLUE,
         icon: 'ios-radio',
-        rightTitle: 'Off',
       },
     ],
   },
   {
     data: [
       {
-        title: 'Notifications',
-        icon: 'ios-notifications',
-        backgroundColor: RED,
+        title: '   Vibrate when name is spoken',
+        icon: 'ios-radio',
+        backgroundColor: GREEN,
+        rightTitle: 'Off',
       },
       {
-        title: 'Control Center',
+        title: '   Train with customized voices',
         backgroundColor: GREY,
         icon: 'ios-switch',
       },
       {
-        title: 'Do Not Disturb',
+        title: '   Do Not Disturb',
         backgroundColor: PURPLE,
         icon: 'ios-moon',
       },
@@ -75,42 +83,24 @@ const sections = [
   {
     data: [
       {
-        title: 'General',
+        title: '   General',
         icon: 'ios-settings',
         backgroundColor: GREY,
       },
       {
-        title: 'Display & Brightness',
+        title: '   Display & Brightness',
         backgroundColor: BLUE,
         icon: 'ios-bulb',
       },
+
       {
-        title: 'Wallpaper',
-        backgroundColor: TEAL_BLUE,
-        icon: 'ios-color-wand',
-      },
-      {
-        title: 'Sounds',
+        title: '   Sounds',
         backgroundColor: RED,
         icon: 'ios-volume-high',
       },
+
       {
-        title: 'Touch ID & Code',
-        backgroundColor: RED,
-        icon: 'ios-finger-print',
-      },
-      {
-        title: 'Emergency Call',
-        backgroundColor: ORANGE,
-        icon: 'ios-medical',
-      },
-      {
-        title: 'Battery',
-        backgroundColor: GREEN,
-        icon: 'ios-battery-full',
-      },
-      {
-        title: 'Confidentiality',
+        title: '   Confidentiality',
         backgroundColor: GREY,
         icon: 'ios-hand',
       },
@@ -119,7 +109,6 @@ const sections = [
   // Space at the bottom
   {data: []},
 ];
-
 export default class Settings extends React.PureComponent {
   renderItem = ({
     item: {title, backgroundColor, icon, rightTitle, hideChevron, checkbox},
@@ -144,11 +133,12 @@ export default class Settings extends React.PureComponent {
             borderRadius: 6,
             alignItems: 'center',
             justifyContent: 'center',
+            marginEnd: 5,
           }}
         />
       </ListItem.Content>
-      {!hideChevron && <ListItem.Chevron />}
-      {checkbox && <ListItem.CheckBox />}
+      {!hideChevron && <ListItem.Chevron style={{marginHorizontal: 5}} />}
+      {checkbox && <ListItem.CheckBox textStyle={{}} />}
     </ListItem>
     // <View >
 

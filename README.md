@@ -5,8 +5,9 @@
 <p> <strong>Backend:</strong> Python, graphql <p/>
 <em>Instructions to reproduce :</em>
 <ul>
-<li> yarn install</>
-* cd android
-* ./gradlew clean
-* cd..
-* npx react-native run-android
+<li> yarn install</li>
+<li> cd android</li>
+<li>./gradlew clean</li>
+<li>cd..</li>
+<li> npx react-native run-android</li>
+</ul> 

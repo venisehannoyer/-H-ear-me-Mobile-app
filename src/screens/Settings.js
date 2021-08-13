@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, SectionList, Image} from 'react-native';
+import {View, Text, StyleSheet, SectionList, Image} from 'react-native';
 
 import {
   ListItem,
@@ -124,28 +124,36 @@ export default class Settings extends React.PureComponent {
   renderItem = ({
     item: {title, backgroundColor, icon, rightTitle, hideChevron, checkbox},
   }) => (
-    <ListItem
-      containerStyle={{paddingVertical: 8, marginBottom: 5}}
-      switch={checkbox && {value: true}}
-      key={title}
-      chevron={!hideChevron}
-      rightTitle={rightTitle}
-      leftIcon={{
-        type: 'ionicon',
-        name: icon,
-        size: 20,
-        color: 'white',
-        containerStyle: {
-          backgroundColor,
-          width: 28,
-          height: 28,
-          borderRadius: 6,
-          alignItems: 'center',
-          justifyContent: 'center',
-        },
-      }}
-      title={title}
-    />
+    <ListItem>
+      <ListItem.Content
+        style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+        <ListItem.Title
+          style={{
+            maarginStart: 10,
+          }}>
+          {title}
+        </ListItem.Title>
+        <Icon
+          name={icon}
+          size={30}
+          type="ionicon"
+          style={{
+            backgroundColor,
+            width: 40,
+            // height: 28,
+            borderRadius: 6,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        />
+      </ListItem.Content>
+      {!hideChevron && <ListItem.Chevron />}
+      {checkbox && <ListItem.CheckBox />}
+    </ListItem>
+    // <View >
+
+    //   <Text>{title}</Text>
+    // </View>
   );
 
   renderSectionHeader = () => <View style={styles.headerSection} />;
@@ -188,7 +196,6 @@ export default class Settings extends React.PureComponent {
           marginTop: 20,
         }}
       />
-      <SearchBar platform="ios" placeholder="Search" />
       <Divider />
     </View>
   );

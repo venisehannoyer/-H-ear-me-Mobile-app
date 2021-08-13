@@ -172,6 +172,7 @@ export default class Settings extends React.PureComponent {
         leftComponent={
           <Icon
             name="menu"
+            size={40}
             onPress={() => this.props.navigation.openDrawer()}
           />
         }

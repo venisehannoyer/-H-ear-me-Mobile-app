@@ -16,6 +16,7 @@ export default class Confidentiality extends React.PureComponent {
           leftComponent={
             <Icon
               name="menu"
+              size={40}
               onPress={() => this.props.navigation.openDrawer()}
             />
           }
@@ -85,7 +86,7 @@ export default class Confidentiality extends React.PureComponent {
                 lineHeight: 30,
               }}>
               {
-                "Your privacy and the respect of your confidential information are at the core of our values and processes. We make sure to not track any of your personal information - and for the minimal that is required for the good functionning such as the settings, or your login and invoicing information, we encrypt them in a way that not even our employees can access them without permission."
+                'Your privacy and the respect of your confidential information are at the core of our values and processes. We make sure to not track any of your personal information - and for the minimal that is required for the good functionning such as the settings, or your login and invoicing information, we encrypt them in a way that not even our employees can access them without permission.'
               }
             </Text>
           </View>

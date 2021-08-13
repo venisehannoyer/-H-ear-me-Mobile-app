@@ -1,44 +1,79 @@
 import React, {Component} from 'react';
-import {
-  PermissionsAndroid,
-  Platform,
-  TouchableOpacity,
-  LogBox
-} from 'react-native';
-import {StyleSheet, View,Image, Text} from 'react-native';
+import {PermissionsAndroid, Platform, Image} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {PicovoiceManager} from '@picovoice/picovoice-react-native';
-import colors from '../config/colors';
-import { Header, Icon } from 'react-native-elements';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Moment from 'react-moment';
+import moment from 'moment';
+import NotificationSounds, {
+  playSampleSound,
+  stopSampleSound,
+} from 'react-native-notification-sounds';
+import {Header, Icon} from 'react-native-elements';
 
 const RNFS = require('react-native-fs');
 
-type Props = {};
-type State = {
-  buttonText: string,
-  buttonDisabled: boolean,
-  rhinoText: string,
-  isListening: boolean,
-};
+export default class App extends Component {
+  _picovoiceManager;
+  tabs = [
+    {
+      key: 'clock',
+      label: 'Clock',
+      barColor: '#F7F7F7',
+      pressColor: 'rgba(255, 255, 255, 0.16)',
+      icon: 'schedule',
+    },
+    {
+      key: 'timer',
+      label: 'Timer',
+      barColor: '#F7F7F7',
+      pressColor: 'rgba(255, 255, 255, 0.16)',
+      icon: 'hourglass-bottom',
+    },
+    {
+      key: 'stopwatch',
+      label: 'Stopwatch',
+      barColor: '#F7F7F7',
+      pressColor: 'rgba(255, 255, 255, 0.16)',
+      icon: 'timer',
+    },
+  ];
 
-class RecognizeAudio extends Component<Props, State> {
-  _picovoiceManager: PicovoiceManager | undefined;
-  //LogBox.ignoreAllLogs(true);
-
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
-      buttonText: 'Start',
-      buttonDisabled: false,
-      picovoiceText: '',
+      activeTab: this.tabs[0].key,
       isListening: false,
+      isStopwatchRunning: false,
+      stopwatchTime: moment.duration({
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      }),
+      isTimerRunning: true,
+      timerStartTime: moment.duration({
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      }),
+      timerCurrentTime: moment.duration({
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      }),
+      alarmTime: undefined,
+      alarmSounding: false,
     };
   }
 
   async componentDidMount() {
-    let wakeWordName = 'porcupine';
+    let wakeWordName = 'pico_clock';
     let wakeWordFilename = wakeWordName;
     let wakeWordPath = '';
-    let contextName = 'smart_lighting';
+    let contextName = 'clock';
     let contextFilename = contextName;
     let contextPath = '';
 
@@ -46,7 +81,10 @@ class RecognizeAudio extends Component<Props, State> {
     if (Platform.OS == 'android') {
       // for Android, extract resources
       wakeWordFilename += '_android.ppn';
-      wakeWordPath = `${RNFS.DocumentDirectoryPath}/${wakeWordFilename}`;
+      wakeWordPath = `${RNFS.DocumentDirectoryPath}/${wakeWordFilename.replace(
+        ' ',
+        '_',
+      )}`;
       await RNFS.copyFileRes(wakeWordFilename, wakeWordPath);
 
       contextFilename += '_android.rhn';
@@ -60,62 +98,117 @@ class RecognizeAudio extends Component<Props, State> {
       contextPath = `${RNFS.MainBundlePath}/${contextFilename}`;
     }
 
-    this._picovoiceManager = PicovoiceManager.create(
-      wakeWordPath,
-      () => {
-        this.setState({
-          picovoiceText: 'Wake word detected! Listening for intent...',
-        });
-      },
-      contextPath,
-      (inference: object) => {
-        this.setState({
-          picovoiceText: this._prettyPrintInference(inference),
-        });
-
-        setTimeout(() => {
-          if (this.state.isListening) {
-            this.setState({
-              picovoiceText: 'Listening for wake word...',
-            });
-          } else {
-            this.setState({
-              picovoiceText: '',
-            });
+    try {
+      this._picovoiceManager = PicovoiceManager.create(
+        wakeWordPath,
+        () => {
+          this.setState({
+            isListening: true,
+          });
+        },
+        contextPath,
+        inference => {
+          var tab = this.state.activeTab;
+          if (inference['isUnderstood']) {
+            if (inference['intent'] == 'clock') {
+              tab = 'clock';
+            } else if (inference['intent'] == 'timer') {
+              this._performTimerCommand(inference['slots']);
+              tab = 'timer';
+            } else if (inference['intent'] == 'setTimer') {
+              this._setTimer(inference['slots']);
+              tab = 'timer';
+            } else if (inference['intent'] == 'alarm') {
+              this._performAlarmCommand(inference['slots']);
+              tab = 'clock';
+            } else if (inference['intent'] == 'setAlarm') {
+              this._setAlarm(inference['slots']);
+              tab = 'clock';
+            } else if (inference['intent'] == 'stopwatch') {
+              this._performStopwatchCommand(inference['slots']);
+              tab = 'stopwatch';
+            }
           }
-        }, 2000);
-      },
-    );
+
+          this.setState({
+            activeTab: tab,
+            isListening: false,
+          });
+        },
+      );
+
+      await this._startProcessing();
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   componentWillUnmount() {
     if (this.state.isListening) {
       this._stopProcessing();
     }
+    this._picovoiceManager?.delete();
   }
 
-  _prettyPrintInference(inference: object) {
-    let printText = `{\n    \"isUnderstood\" : \"${inference['isUnderstood']}\",\n`;
-    if (inference['isUnderstood']) {
-      printText += `    \"intent\" : \"${inference['intent']}\",\n`;
-      if (Object.keys(inference['slots']).length > 0) {
-        printText += '    "slots" : {\n';
-        let slots = inference['slots'];
-        for (const key in slots) {
-          printText += `        \"${key}\" : \"${slots[key]}\",\n`;
-        }
-        printText += '    }\n';
+  _updateTime() {
+    if (this.state.isTimerRunning) {
+      this.setState({
+        timerCurrentTime: this.state.timerCurrentTime.subtract(
+          100,
+          'milliseconds',
+        ),
+      });
+
+      // timer's up
+      if (
+        this.state.timerCurrentTime &&
+        this.state.timerCurrentTime.as('seconds') == 0
+      ) {
+        NotificationSounds.getNotifications('ringtone').then(soundsList => {
+          playSampleSound(soundsList[0]);
+          setTimeout(() => {
+            stopSampleSound();
+          }, 5000);
+        });
+
+        this.setState({
+          isTimerRunning: false,
+          activeTab: 'timer',
+        });
       }
     }
-    printText += '}';
-    return printText;
+
+    if (this.state.isStopwatchRunning) {
+      this.setState({
+        stopwatchTime: this.state.stopwatchTime.add(100, 'milliseconds'),
+      });
+    }
+
+    var now = moment();
+    if (
+      this.state.alarmTime &&
+      !this.state.alarmSounding &&
+      this.state.alarmTime.isSameOrBefore(now)
+    ) {
+      this.setState({
+        activeTab: 'clock',
+        alarmSounding: true,
+      });
+
+      NotificationSounds.getNotifications('ringtone').then(soundsList => {
+        playSampleSound(soundsList[0]);
+        setTimeout(() => {
+          stopSampleSound();
+          this.setState({
+            alarmSounding: false,
+            alarmTime: undefined,
+          });
+        }, 5000);
+      });
+    }
   }
 
   async _startProcessing() {
-    this.setState({
-      buttonDisabled: true,
-    });
-
     let recordAudioRequest;
     if (Platform.OS == 'android') {
       recordAudioRequest = this._requestRecordAudioPermission();
@@ -128,48 +221,19 @@ class RecognizeAudio extends Component<Props, State> {
     recordAudioRequest.then(hasPermission => {
       if (!hasPermission) {
         console.error('Required microphone permission was not granted.');
-        this.setState({
-          buttonDisabled: false,
-        });
         return;
       }
+
       try {
         this._picovoiceManager?.start().then(didStart => {
           if (didStart) {
-            this.setState({
-              buttonText: 'Stop',
-              buttonDisabled: false,
-              picovoiceText: 'Listening for wake word...',
-              isListening: true,
-            });
+            setInterval(this._updateTime.bind(this), 100);
           }
         });
       } catch (err) {
         console.error(err);
       }
     });
-  }
-
-  _stopProcessing() {
-    this.setState({
-      buttonDisabled: true,
-    });
-
-    this._picovoiceManager?.stop().then(didStop => {
-      if (didStop) {
-        this.setState({
-          buttonText: 'Start',
-          picovoiceText: '',
-          buttonDisabled: false,
-          isListening: false,
-        });
-      }
-    });
-  }
-
-  _toggleListening() {
-    if (this.state.isListening) this._stopProcessing();
-    else this._startProcessing();
   }
 
   async _requestRecordAudioPermission() {
@@ -179,8 +243,7 @@ class RecognizeAudio extends Component<Props, State> {
         {
           title: 'Microphone Permission',
           message:
-            'Rhino needs access to your microphone to make intent inferences.',
-          buttonNeutral: 'Ask Me Later',
+            'Picovoice wants to access your mic to enable voice commands.',
           buttonNegative: 'Cancel',
           buttonPositive: 'OK',
         },
@@ -192,83 +255,304 @@ class RecognizeAudio extends Component<Props, State> {
     }
   }
 
+  _stopProcessing() {
+    this._picovoiceManager?.stop().then(didStop => {
+      if (didStop) {
+        this.setState({});
+      }
+    });
+  }
+
+  _performTimerCommand(slots) {
+    var action = slots['action'];
+    if (action == 'start') {
+      this.setState({
+        isTimerRunning: true,
+      });
+    } else if (action == 'pause' || action == 'stop') {
+      this.setState({
+        isTimerRunning: false,
+      });
+    } else if (action == 'reset') {
+      this.setState({
+        timerCurrentTime: moment.duration(this.state.timerStartTime),
+        isTimerRunning: false,
+      });
+    } else if (action == 'restart') {
+      this.setState({
+        timerCurrentTime: moment.duration(this.state.timerStartTime),
+        isTimerRunning: true,
+      });
+    }
+  }
+
+  _setTimer(slots) {
+    if (this.state.isTimerRunning) {
+      this.setState({
+        isTimerRunning: false,
+      });
+    }
+
+    var hours = 0;
+    var minutes = 0;
+    var seconds = 0;
+    if (slots['hours']) {
+      hours = Number.parseInt(slots['hours']);
+    }
+    if (slots['minutes']) {
+      minutes = Number.parseInt(slots['minutes']);
+    }
+    if (slots['seconds']) {
+      seconds = Number.parseInt(slots['seconds']);
+    }
+
+    this.setState({
+      timerCurrentTime: moment.duration({
+        hour: hours,
+        minute: minutes,
+        second: seconds,
+        millisecond: 0,
+      }),
+      timerStartTime: moment.duration({
+        hour: hours,
+        minute: minutes,
+        second: seconds,
+        millisecond: 0,
+      }),
+      isTimerRunning: true,
+    });
+  }
+
+  _performAlarmCommand(slots) {
+    if (slots['action'] == 'delete') {
+      _alarmTime = undefined;
+    }
+  }
+
+  _setAlarm(slots) {
+    var hours = 0;
+    var minutes = 0;
+    var alarmWeekday = moment().day();
+    if (slots['day']) {
+      alarmWeekday = this._dayToWeekday(slots['day']);
+    }
+    if (slots['hour']) {
+      hours = Number.parseInt(slots['hour']);
+    }
+    if (slots['minute']) {
+      minutes = Number.parseInt(slots['minute']);
+    }
+
+    if (slots['amPm'] == 'p m') hours += 12;
+
+    if (hours >= 24 || minutes >= 60) {
+      console.error(`${hours}:${minutes} is an invalid time.`);
+      return;
+    }
+
+    var now = moment();
+    var dayOfMonth = now.date() + alarmWeekday - now.day();
+    var time = moment({
+      year: now.year(),
+      month: now.month(),
+      date: dayOfMonth,
+      hour: hours,
+      minute: minutes,
+    });
+
+    if (time.isBefore(now)) {
+      console.error(
+        `${time.format('ddd, MMM Do h:mm a')} is an invalid alarm time.`,
+      );
+      return;
+    }
+
+    this.setState({
+      alarmTime: moment(time),
+    });
+  }
+
+  _dayToWeekday(day) {
+    if (day == 'tomorrow') return moment().day() + 1;
+    else if (day == 'today') {
+      return moment().day();
+    } else if (day == 'sunday') {
+      return 7;
+    } else {
+      return moment().day(day).day();
+    }
+  }
+
+  _performStopwatchCommand(slots) {
+    var action = slots['action'];
+    if (action == 'start') {
+      this.setState({
+        isStopwatchRunning: true,
+      });
+    } else if (action == 'pause' || action == 'stop') {
+      this.setState({
+        isStopwatchRunning: false,
+      });
+    } else if (action == 'reset') {
+      this.setState({
+        isStopwatchRunning: false,
+        stopwatchTime: moment.duration({
+          hour: 0,
+          minute: 0,
+          second: 0,
+          millisecond: 0,
+        }),
+      });
+    } else if (action == 'restart') {
+      this.setState({
+        stopwatchTime: moment.duration({
+          hour: 0,
+          minute: 0,
+          second: 0,
+          millisecond: 0,
+        }),
+        isStopwatchRunning: true,
+      });
+    }
+  }
+
+  _renderIcon =
+    icon =>
+    ({isActive}) =>
+      (
+        <MaterialIcons
+          size={40}
+          color={isActive ? '#377DFF' : '#777777'}
+          name={icon}
+        />
+      );
+
+  _renderDisplayClockText() {
+    if (this.state.activeTab == 'clock') {
+      return (
+        <Moment
+          element={Text}
+          style={styles.clockText}
+          format={'h:mm A'}
+          interval={500}></Moment>
+      );
+    } else if (this.state.activeTab == 'timer') {
+      return (
+        <Moment element={Text} style={styles.clockText} format={'H:mm:ss'}>
+          {moment.utc(this.state.timerCurrentTime.as('milliseconds'))}
+        </Moment>
+      );
+    } else if (this.state.activeTab == 'stopwatch') {
+      return (
+        <Moment element={Text} style={styles.clockText} format={'m:ss.S'}>
+          {moment.utc(this.state.stopwatchTime.as('milliseconds'))}
+        </Moment>
+      );
+    } else {
+      return null;
+    }
+  }
+
+  _renderDisplayDateText() {
+    if (this.state.activeTab == 'clock') {
+      return (
+        <Moment
+          element={Text}
+          format={'dddd, MMMM Do'}
+          interval={500}
+          style={styles.dateText}></Moment>
+      );
+    } else return null;
+  }
+
+  _renderAlarmText() {
+    if (this.state.activeTab == 'clock' && this.state.alarmTime) {
+      return (
+        <View style={{position: 'absolute', bottom: 0, alignItems: 'center'}}>
+          <MaterialIcons name="alarm" color="#ff005f" size={20}></MaterialIcons>
+          <Moment
+            element={Text}
+            format={'ddd, MMM Do h:mma'}
+            style={styles.alarmText}>
+            {this.state.alarmTime}
+          </Moment>
+        </View>
+      );
+    } else return null;
+  }
+
   render() {
     return (
-      <View
-        style={[
-          styles.container,
-          {backgroundColor: this.state.backgroundColour},
-        ]}>
+      <View style={styles.container}>
         <View style={styles.statusBar}>
-            <Header
-                statusBarProps={{barStyle: 'light-content'}}
-                barStyle="light-content"
-                leftComponent={
-                    <Icon
-                    name="menu"
-                    onPress={() => this.props.navigation.openDrawer()}
-                    />
-                }
-                centerComponent={
-                    <Image
-                    source={{
-                        //uri: 'https://i.postimg.cc/dtCKLDbB/Hearme-Logo-Black.jpg'
-                        uri: 'https://i.postimg.cc/SNCMqQP4/Logo-big.png',
-                        // uri: 'https://i.postimg.cc/jdV3QB7F/IMG-20191105-10568.jpg'
-                    }}
-                    style={{
-                        flex: 1,
-                        height: '100%',
-                        width: '100%',
-                        resizeMode: 'contain',
-                    }}
-                    />
-                }
-                containerStyle={{
-                    backgroundColor: '#3175b8',
-                    justifyContent: 'space-around',
-                    marginTop: 20,
+          <Header
+            statusBarProps={{barStyle: 'light-content'}}
+            barStyle="light-content"
+            leftComponent={
+              <Icon
+                name="menu"
+                size={40}
+                onPress={() => this.props.navigation.openDrawer()}
+              />
+            }
+            centerComponent={
+              <Image
+                source={{
+                  //uri: 'https://i.postimg.cc/dtCKLDbB/Hearme-Logo-Black.jpg'
+                  uri: 'https://i.postimg.cc/SNCMqQP4/Logo-big.png',
+                  // uri: 'https://i.postimg.cc/jdV3QB7F/IMG-20191105-10568.jpg'
                 }}
-            />
-        </View>
+                style={{
+                  flex: 1,
+                  height: '100%',
+                  width: '100%',
+                  resizeMode: 'contain',
+                }}
+              />
+            }
+            containerStyle={{
+              backgroundColor: '#3175b8',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              marginTop: 20,
+              height: 80,
 
+              // paddingVertical: 10,
+            }}
+          />
+        </View>
         <View
           style={{
-            flex: 0.35,
-            justifyContent: 'center',
-            alignContent: 'center',
+            flex: 1,
+            marginTop: '30%',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
           }}>
-          <TouchableOpacity
-            style={{
-              width: '50%',
-              height: '50%',
-              alignSelf: 'center',
-              justifyContent: 'center',
-              backgroundColor: '#377DFF',
-              borderRadius: 100,
-            }}
-            onPress={() => this._toggleListening()}
-            disabled={this.state.buttonDisabled}>
-            <Text style={styles.buttonText}>{this.state.buttonText}</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{flex: 1, padding: 20}}>
+          {/* {this._renderDisplayClockText()}
+          {this._renderDisplayDateText()}
+          {this._renderAlarmText()} */}
           <View
             style={{
+              // justifyContent: 'flex-start',
               flex: 1,
-              flexDirection: 'row',
               justifyContent: 'center',
-              padding: 30,
-              backgroundColor: '#25187E',
             }}>
-            <Text style={styles.picovoiceText}>{this.state.picovoiceText}</Text>
+            <MaterialIcons
+              size={100}
+              color={this.state.isListening ? '#377DFF' : '#777777'}
+              name={this.state.isListening ? 'mic' : 'mic-none'}
+              style={{alignSelf: 'center'}}
+            />
+            <Text style={styles.instructions}>Say 'Hey Hear-me'!</Text>
           </View>
         </View>
         <View
-          style={{flex: 0.08, justifyContent: 'flex-end', paddingBottom: 25}}>
-          <Text style={styles.instructions}>
-            Made in Vancouver, Canada by Picovoice
-          </Text>
+          style={{
+            // justifyContent: 'flex-start',
+            flex: 4,
+            justifyContent: 'center',
+          }}>
+          <Text style={styles.instructions}>The result will shown here</Text>
         </View>
       </View>
     );
@@ -280,50 +564,29 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
   },
-  subContainer: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  statusBar: {
-    flex: 0.17,
-    backgroundColor: '#377DFF',
-    justifyContent: 'flex-end',
-  },
-  statusBarText: {
-    fontSize: 18,
-    color: 'white',
-    fontWeight: 'bold',
-    marginLeft: 15,
-    marginBottom: 15,
-  },
-
-  buttonStyle: {
-    backgroundColor: '#377DFF',
-    borderRadius: 100,
-  },
-  buttonText: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    color: 'white',
+  clockText: {
+    color: '#377DFF',
+    fontSize: 70,
     textAlign: 'center',
+    textAlignVertical: 'center',
   },
-  picovoiceText: {
-    flex: 1,
-    flexWrap: 'wrap',
-    color: 'white',
-    fontSize: 20,
-  },
-  itemStyle: {
-    fontWeight: 'bold',
-    fontSize: 20,
+  dateText: {
+    color: '#777777',
     textAlign: 'center',
+    textAlignVertical: 'center',
+    fontSize: 22,
+  },
+  alarmText: {
+    color: '#ff005f',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    fontSize: 15,
   },
   instructions: {
     textAlign: 'center',
-    color: '#666666',
+    color: '#BBBBBB',
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 });
-
-export default RecognizeAudio;

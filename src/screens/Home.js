@@ -16,6 +16,7 @@ export default class HomeScreen extends React.PureComponent {
           leftComponent={
             <Icon
               name="menu"
+              size={40}
               onPress={() => this.props.navigation.openDrawer()}
             />
           }
@@ -87,7 +88,7 @@ export default class HomeScreen extends React.PureComponent {
                 lineHeight: 30,
               }}>
               {
-                "Notre produit se concentre sur la détection et localisation et l'apparition de nouveaux bruits - \n en utilisant l'intelligence artificielle pour détecter le type de signature sonore (conversation, sonnette, alarme, bris de verre), voire le transcrire et en adaptant le réglage aux individus (préférence et handicap) et aux situations. \n Il sera sous la forme d'un tour de cou connecté au téléphone et aux appareils d'aide à l'écoute. \n (proposition de résumé pour le sondage)"
+                'Our product is an accessory to help the deaf and hard-of-hearing to decipher the sounds and voices that surround them.\n Using artificial intelligence (AI) and sound/voice recognition, the product detects the type of sound signature (conversation, bell ring, alarm, broken glass), locates its origin and transcribes the sounds in written or oral form, depending on the individual (preference and handicap) and the situation. \n A system of vibrations indicates the detection of sounds. \n The comprehension of conversations occurs by an analysis of dialogues, retransmitted to the user’s hearing aids.\n This product will be in the form of a necklace connected to a smartphone and to hearing aid devices.'
               }
             </Text>
           </View>
@@ -98,7 +99,9 @@ export default class HomeScreen extends React.PureComponent {
               marginVertical: 10,
               width: '40%',
             }}
-            onPress={() => { this.props.navigation.navigate('LoginPage'); }}
+            onPress={() => {
+              this.props.navigation.navigate('LoginPage');
+            }}
           />
         </View>
       </View>

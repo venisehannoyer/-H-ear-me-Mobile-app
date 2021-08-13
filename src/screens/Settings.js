@@ -1,7 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, SectionList, Image } from 'react-native';
+import {View, StyleSheet, SectionList, Image} from 'react-native';
 
-import { ListItem, Divider, SearchBar, Header, Icon } from 'react-native-elements';
+import {
+  ListItem,
+  Divider,
+  SearchBar,
+  Header,
+  Icon,
+} from 'react-native-elements';
 
 const ORANGE = '#FF9500';
 const BLUE = '#007AFF';
@@ -12,211 +18,211 @@ const PURPLE = '#5856D6';
 const TEAL_BLUE = '#5AC8FA';
 
 const sections = [
-    {
-        data: [
-            {
-                title: 'Airplane Mode',
-                icon: 'ios-airplane',
-                backgroundColor: ORANGE,
-                hideChevron: true,
-                checkbox: true,
-            },
-            {
-                title: 'Wi-Fi',
-                backgroundColor: BLUE,
-                icon: 'ios-wifi',
-            },
-            {
-                title: 'Bluetooth',
-                backgroundColor: BLUE,
-                icon: 'ios-bluetooth',
-                //rightTitle: 'Off',
-                hideChevron: true,
-                checkbox: true,
-            },
-            {
-                title: 'Cellular',
-                backgroundColor: GREEN,
-                icon: 'ios-phone-portrait',
-            },
-            {
-                title: 'Personal Hotspot',
-                backgroundColor: GREEN,
-                icon: 'ios-radio',
-                rightTitle: 'Off',
-            },
-        ],
-    },
-    {
-        data: [
-            {
-                title: 'Notifications',
-                icon: 'ios-notifications',
-                backgroundColor: RED,
-            },
-            {
-                title: 'Control Center',
-                backgroundColor: GREY,
-                icon: 'ios-switch',
-            },
-            {
-                title: 'Do Not Disturb',
-                backgroundColor: PURPLE,
-                icon: 'ios-moon',
-            },
-        ],
-    },
-    {
-        data: [
-            {
-                title: 'General',
-                icon: 'ios-settings',
-                backgroundColor: GREY,
-            },
-            {
-                title: 'Display & Brightness',
-                backgroundColor: BLUE,
-                icon: 'ios-bulb',
-            },
-            {
-                title: 'Wallpaper',
-                backgroundColor: TEAL_BLUE,
-                icon: 'ios-color-wand',
-            },
-            {
-                title: 'Sounds',
-                backgroundColor: RED,
-                icon: 'ios-volume-high',
-            },
-            {
-                title: 'Touch ID & Code',
-                backgroundColor: RED,
-                icon: 'ios-finger-print',
-            },
-            {
-                title: 'Emergency Call',
-                backgroundColor: ORANGE,
-                icon: 'ios-medical',
-            },
-            {
-                title: 'Battery',
-                backgroundColor: GREEN,
-                icon: 'ios-battery-full',
-            },
-            {
-                title: 'Confidentiality',
-                backgroundColor: GREY,
-                icon: 'ios-hand',
-            },
-        ],
-    },
-    // Space at the bottom
-    { data: [] },
+  {
+    data: [
+      {
+        title: 'Airplane Mode',
+        icon: 'ios-airplane',
+        backgroundColor: ORANGE,
+        hideChevron: true,
+        checkbox: true,
+      },
+      {
+        title: 'Wi-Fi',
+        backgroundColor: BLUE,
+        icon: 'ios-wifi',
+      },
+      {
+        title: 'Bluetooth',
+        backgroundColor: BLUE,
+        icon: 'ios-bluetooth',
+        //rightTitle: 'Off',
+        hideChevron: true,
+        checkbox: true,
+      },
+      {
+        title: 'Cellular',
+        backgroundColor: GREEN,
+        icon: 'ios-phone-portrait',
+      },
+      {
+        title: 'Personal Hotspot',
+        backgroundColor: GREEN,
+        icon: 'ios-radio',
+        rightTitle: 'Off',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        title: 'Notifications',
+        icon: 'ios-notifications',
+        backgroundColor: RED,
+      },
+      {
+        title: 'Control Center',
+        backgroundColor: GREY,
+        icon: 'ios-switch',
+      },
+      {
+        title: 'Do Not Disturb',
+        backgroundColor: PURPLE,
+        icon: 'ios-moon',
+      },
+    ],
+  },
+  {
+    data: [
+      {
+        title: 'General',
+        icon: 'ios-settings',
+        backgroundColor: GREY,
+      },
+      {
+        title: 'Display & Brightness',
+        backgroundColor: BLUE,
+        icon: 'ios-bulb',
+      },
+      {
+        title: 'Wallpaper',
+        backgroundColor: TEAL_BLUE,
+        icon: 'ios-color-wand',
+      },
+      {
+        title: 'Sounds',
+        backgroundColor: RED,
+        icon: 'ios-volume-high',
+      },
+      {
+        title: 'Touch ID & Code',
+        backgroundColor: RED,
+        icon: 'ios-finger-print',
+      },
+      {
+        title: 'Emergency Call',
+        backgroundColor: ORANGE,
+        icon: 'ios-medical',
+      },
+      {
+        title: 'Battery',
+        backgroundColor: GREEN,
+        icon: 'ios-battery-full',
+      },
+      {
+        title: 'Confidentiality',
+        backgroundColor: GREY,
+        icon: 'ios-hand',
+      },
+    ],
+  },
+  // Space at the bottom
+  {data: []},
 ];
 
 export default class Settings extends React.PureComponent {
-    renderItem = ({
-        item: { title, backgroundColor, icon, rightTitle, hideChevron, checkbox },
-    }) => (
-            <ListItem
-                containerStyle={{ paddingVertical: 8 }}
-                switch={checkbox && { value: true }}
-                key={title}
-                chevron={!hideChevron}
-                rightTitle={rightTitle}
-                leftIcon={{
-                    type: 'ionicon',
-                    name: icon,
-                    size: 20,
-                    color: 'white',
-                    containerStyle: {
-                        backgroundColor,
-                        width: 28,
-                        height: 28,
-                        borderRadius: 6,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                    },
-                }}
-                title={title}
-            />
-        );
+  renderItem = ({
+    item: {title, backgroundColor, icon, rightTitle, hideChevron, checkbox},
+  }) => (
+    <ListItem
+      containerStyle={{paddingVertical: 8, marginBottom: 5}}
+      switch={checkbox && {value: true}}
+      key={title}
+      chevron={!hideChevron}
+      rightTitle={rightTitle}
+      leftIcon={{
+        type: 'ionicon',
+        name: icon,
+        size: 20,
+        color: 'white',
+        containerStyle: {
+          backgroundColor,
+          width: 28,
+          height: 28,
+          borderRadius: 6,
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+      }}
+      title={title}
+    />
+  );
 
-    renderSectionHeader = () => <View style={styles.headerSection} />;
+  renderSectionHeader = () => <View style={styles.headerSection} />;
 
-    ItemSeparatorComponent = () => (
-        <View style={styles.separatorComponent}>
-            <Divider style={styles.separator} />
-        </View>
+  ItemSeparatorComponent = () => (
+    <View style={styles.separatorComponent}>
+      <Divider style={styles.separator} />
+    </View>
+  );
+
+  ListHeaderComponent = () => (
+    <View>
+      <Header
+        statusBarProps={{barStyle: 'light-content'}}
+        barStyle="light-content"
+        leftComponent={
+          <Icon
+            name="menu"
+            onPress={() => this.props.navigation.openDrawer()}
+          />
+        }
+        centerComponent={
+          <Image
+            source={{
+              //uri: 'https://i.postimg.cc/dtCKLDbB/Hearme-Logo-Black.jpg'
+              uri: 'https://i.postimg.cc/SNCMqQP4/Logo-big.png',
+              // uri: 'https://i.postimg.cc/jdV3QB7F/IMG-20191105-10568.jpg'
+            }}
+            style={{
+              flex: 1,
+              height: '100%',
+              width: '100%',
+              resizeMode: 'contain',
+            }}
+          />
+        }
+        containerStyle={{
+          backgroundColor: '#3175b8',
+          justifyContent: 'space-around',
+          marginTop: 20,
+        }}
+      />
+      <SearchBar platform="ios" placeholder="Search" />
+      <Divider />
+    </View>
+  );
+
+  keyExtractor = (item, index) => index;
+
+  render() {
+    return (
+      <SectionList
+        keyExtractor={this.keyExtractor}
+        ListHeaderComponent={this.ListHeaderComponent}
+        contentContainerStyle={styles.containerStyle}
+        sections={sections}
+        renderItem={this.renderItem}
+        renderSectionHeader={this.renderSectionHeader}
+        ItemSeparatorComponent={this.ItemSeparatorComponent}
+        SectionSeparatorComponent={Divider}
+        stickySectionHeadersEnabled={false}
+      />
     );
-
-    ListHeaderComponent = () => (
-        <View>
-            <Header
-                statusBarProps={{barStyle: 'light-content'}}
-                barStyle="light-content"
-                leftComponent={
-                    <Icon
-                    name="menu"
-                    onPress={() => this.props.navigation.openDrawer()}
-                    />
-                }
-                centerComponent={
-                    <Image
-                    source={{
-                        //uri: 'https://i.postimg.cc/dtCKLDbB/Hearme-Logo-Black.jpg'
-                        uri: 'https://i.postimg.cc/SNCMqQP4/Logo-big.png',
-                        // uri: 'https://i.postimg.cc/jdV3QB7F/IMG-20191105-10568.jpg'
-                    }}
-                    style={{
-                        flex: 1,
-                        height: '100%',
-                        width: '100%',
-                        resizeMode: 'contain',
-                    }}
-                    />
-                }
-                containerStyle={{
-                    backgroundColor: '#3175b8',
-                    justifyContent: 'space-around',
-                    marginTop: 20,
-                }}
-            />                
-            <SearchBar platform="ios" placeholder="Search" />
-            <Divider />
-        </View>
-    );
-
-    keyExtractor = (item, index) => index;
-
-    render() {
-        return (
-            <SectionList
-                keyExtractor={this.keyExtractor}
-                ListHeaderComponent={this.ListHeaderComponent}
-                contentContainerStyle={styles.containerStyle}
-                sections={sections}
-                renderItem={this.renderItem}
-                renderSectionHeader={this.renderSectionHeader}
-                ItemSeparatorComponent={this.ItemSeparatorComponent}
-                SectionSeparatorComponent={Divider}
-                stickySectionHeadersEnabled={false}
-            />
-        );
-    }
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#EFEFF4',
-    },
-    separatorComponent: {
-        backgroundColor: 'white',
-    },
-    separator: {
-        marginLeft: 58,
-    },
-    headerSection: {
-        height: 30,
-    },
+  container: {
+    backgroundColor: '#EFEFF4',
+  },
+  separatorComponent: {
+    backgroundColor: 'white',
+  },
+  separator: {
+    marginLeft: 58,
+  },
+  headerSection: {
+    height: 30,
+  },
 });

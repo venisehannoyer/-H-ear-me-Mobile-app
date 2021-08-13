@@ -20,8 +20,8 @@ const DrawerNavigator = createDrawerNavigator(
   {
     Home: {screen: Home},
     Gallery: {screen: Gallery},
-    LoginPage: {screen: LoginPage},
     Contact: {screen: Contact},
+    LoginPage: {screen: LoginPage},
     //List: {screen: List},
     Confidentiality: {screen: Confidentiality},
     Settings: {screen: Settings},
@@ -38,6 +38,7 @@ const DrawerNavigator = createDrawerNavigator(
 const StackNavigator = createStackNavigator(
   {
     Drawer: {screen: DrawerNavigator},
+    // LoginPage: {screen: LoginPage},
   },
   {
     initialRouteName: 'Drawer',
@@ -45,6 +46,7 @@ const StackNavigator = createStackNavigator(
   },
 );
 const Navigator = createAppContainer(StackNavigator);
+
 const App = () => {
   LogBox.ignoreAllLogs(true);
 
